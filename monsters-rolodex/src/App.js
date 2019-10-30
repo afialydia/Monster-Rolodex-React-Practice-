@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import {CardList}  from './components/card-list/card-list.component'
+import { CardList } from "./components/card-list/card-list.component";
 import "./App.css";
 
 class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			monsters: []
+			monsters: [],
+			searchField: ""
 		};
 	}
 
@@ -17,11 +18,24 @@ class App extends Component {
 	}
 
 	render() {
+		const { monsters, searchField } = this.state;
+		const filteredMonsters = monsters.filter(monster =>
+			monster.name.toLowerCase().includes(searchField.toLowerCase())
+		);
 		return (
 			<div className="App">
-				<CardList monsters = {this.state.monsters}>
-				
-				</CardList>
+				<input
+					type="search"
+					placeholder="search monster"
+					onChange={e => this.setState({ searchField: e.target.value })}
+				/>
+				{/*if you want to console.log search fields you need to do it as the second param of setState like so :
+				onChange={e => {
+						this.setState({ searchField: e.target.value }, () =>
+							console.log(this.state)
+						);
+					}}*/}
+				<CardList monsters={filteredMonsters} />
 			</div>
 		);
 	}
